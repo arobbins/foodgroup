@@ -2541,7 +2541,14 @@ Media Queries
 
 
 
+/*
 
+
+COLORS
+  green: 3fae29;
+
+
+*/
 
 
 
@@ -2583,9 +2590,15 @@ Media Queries
 .widget-newsletter .ss-form-entry.goog-inline-block,
 .widget-newsletter .ss-item.ss-navigate tbody {
   border: none;
-  padding: none;
+  padding: 0;
 }
 
 .widget-newsletter #ss-submit {
   padding: 1.15em 1.8em;
+  background-color: #3fae29;
+}
+
+.widget-newsletter #ss-submit:hover {
+  color: white;
+  background-color: #338b21;
 }
