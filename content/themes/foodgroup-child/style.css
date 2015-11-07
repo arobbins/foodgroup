@@ -2568,6 +2568,24 @@ Media Queries
   width: 40%;
 }
 
-.wpgform-user-email {
+.widget-newsletter .wpgform-user-email {
   display: none !important;
+}
+
+.widget-newsletter .ss-q-title {
+  display: none;
+}
+
+.widget-newsletter .error-message {
+  display: none;
+}
+
+.widget-newsletter .ss-form-entry.goog-inline-block,
+.widget-newsletter .ss-item.ss-navigate tbody {
+  border: none;
+  padding: none;
+}
+
+.widget-newsletter #ss-submit {
+  padding: 1.15em 1.8em;
 }
