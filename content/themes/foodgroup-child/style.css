@@ -2557,7 +2557,11 @@ COLORS
 /*
   Child Theme styles
 */
-.widget-newsletter .ss-top-of-page {
+.widget-newsletter .ss-top-of-page,
+.widget-newsletter .ss-response-footer,
+.widget-newsletter .ss-q-title,
+.widget-newsletter .error-message,
+.widget-newsletter .ss-opt-actions {
   display: none;
 }
 
@@ -2579,14 +2583,6 @@ COLORS
   display: none !important;
 }
 
-.widget-newsletter .ss-q-title {
-  display: none;
-}
-
-.widget-newsletter .error-message {
-  display: none;
-}
-
 .widget-newsletter .ss-form-entry.goog-inline-block,
 .widget-newsletter .ss-item.ss-navigate tbody {
   border: none;
@@ -2601,4 +2597,8 @@ COLORS
 .widget-newsletter #ss-submit:hover {
   color: white;
   background-color: #338b21;
+}
+
+.widget-newsletter .ss-resp-message {
+  color: white;
 }
