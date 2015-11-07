@@ -2546,8 +2546,8 @@ Media Queries
 
 COLORS
   green: 3fae29;
-
-
+  red: f6323e;
+  orange: ffb718;
 */
 
 
@@ -2567,7 +2567,7 @@ COLORS
 
 .widget-newsletter .ss-form-question {
   float: left;
-  width: 60%;
+  width: 76.8%;
 }
 
 .widget-newsletter .ss-form-question input {
@@ -2601,4 +2601,52 @@ COLORS
 
 .widget-newsletter .ss-resp-message {
   color: white;
+}
+
+.widget-newsletter .ss-resp-message a {
+  text-decoration: underline;
+  color: white;
+}
+
+.widget-newsletter .ss-resp-message a:hover {
+  color: #ffb718;
+}
+
+.errorheader {
+  background-color: #f6323e;
+  color: white;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+.ss-resp-message {
+  background-color: #369b3e;
+  color: white;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+
+
+
+/*
+
+  Utils
+
+*/
+.notice {
+  color: white;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+.notice-error {
+  background-color: #f6323e;
+}
+
+.notice-success {
+  background-color: #369b3e;
 }
