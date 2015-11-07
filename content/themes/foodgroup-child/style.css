@@ -2538,3 +2538,31 @@ Media Queries
 	}
 
 }
+
+
+
+
+
+
+
+
+
+/*
+  Child Theme styles
+*/
+.widget-newsletter .ss-top-of-page {
+  display: none;
+}
+
+.widget-newsletter .ss-form-question {
+  float: left;
+  width: 60%;
+}
+
+.widget-newsletter.ss-item.ss-navigate {
+  float: left;
+}
+
+.wpgform-user-email {
+  display: none;
+}
