@@ -23,11 +23,22 @@ add_theme_support( 'genesis-responsive-viewport' );
 add_action( 'wp_enqueue_scripts', 'centric_load_scripts' );
 function centric_load_scripts() {
 
+  // Styles
+  wp_enqueue_style( 'font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css', array(), CHILD_THEME_VERSION );
+
+  wp_enqueue_style( 'slick-css', '//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.css', array());
+
 	wp_enqueue_style( 'google-fonts', '//fonts.googleapis.com/css?family=Lato:300,700|Spinnaker', array(), CHILD_THEME_VERSION );
 
 	wp_enqueue_style( 'dashicons' );
 
-	wp_enqueue_script( 'centric-global', get_bloginfo( 'stylesheet_directory' ) . '/js/global.js', array( 'jquery' ), '1.0.0', true );
+
+  // Scripts
+  wp_enqueue_script( 'slick-js', '//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js', array( 'jquery' ), '1.0.0', true );
+
+  wp_enqueue_script( 'fit-vids', get_stylesheet_directory_uri() . '/js/vendor/fitvids.min.js', array( 'jquery' ), '1.0.0', true );
+
+	wp_enqueue_script( 'centric-global', get_bloginfo('stylesheet_directory' ) . '/js/global.js', array( 'jquery' ), '1.0.0', true );
 
 }
 
@@ -82,10 +93,10 @@ add_action( 'genesis_before', 'centric_post_title' );
 function centric_post_title() {
 
 	if ( is_page() and !is_page_template() ) {
-		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-		add_action( 'genesis_after_header', 'centric_open_post_title', 1 );
-		add_action( 'genesis_after_header', 'genesis_do_post_title', 2 );
-		add_action( 'genesis_after_header', 'centric_close_post_title', 3 );
+		// remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+		// add_action( 'genesis_after_header', 'centric_open_post_title', 1 );
+		// add_action( 'genesis_after_header', 'genesis_do_post_title', 2 );
+		// add_action( 'genesis_after_header', 'centric_close_post_title', 3);
 	} elseif ( is_category() ) {
 		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 		add_action( 'genesis_after_header', 'centric_open_post_title', 1 ) ;
@@ -186,11 +197,9 @@ genesis_register_sidebar( array(
 ) );
 
 
-/*
-**
-  Changing the Footer text
-**
-*/
+//
+// Changing the Footer text
+//
 function sp_footer_creds_filter($creds) {
 
   $date = date("Y");
@@ -201,3 +210,76 @@ function sp_footer_creds_filter($creds) {
 }
 
 add_filter('genesis_footer_creds_text', 'sp_footer_creds_filter');
+
+
+//
+// Remove default header
+//
+function injectHeader() { ?>
+
+  <div id="title-area" class="header-logo-wrap">
+    <a href="<?php echo home_url(); ?>" class="header-logo">
+      <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo-primary.svg" alt="The Food Group" />
+    </a>
+  </div>
+
+  <div class="header-navs">
+    <ul class="social-sites header-social">
+      <?php if( get_field('global_social_sites', 'option') ): ?>
+
+        <?php while( has_sub_field('global_social_sites', 'option') ): ?>
+
+          <li class="social-site">
+            <a href="<?php the_sub_field('global_social_site_link', 'option'); ?>" class="social-site-link">
+              <i class="fa <?php the_sub_field('global_social_site_icon', 'option'); ?>"  class="social-site-icon"></i>
+            </a>
+          </li>
+
+        <?php endwhile; ?>
+
+      <?php endif; ?>
+    </ul>
+
+    <?php wp_nav_menu(array('menu' => 'Secondary Navigation')); ?>
+    <?php wp_nav_menu(array('menu' => 'Primary Navigation')); ?>
+  </div>
+
+<?php }
+
+remove_action('genesis_header','genesis_do_header');
+add_action('genesis_header','injectHeader');
+
+
+function include_custom_components() {
+  get_template_part('templates/layout', 'components');
+}
+
+add_action( 'genesis_before_footer', 'include_custom_components', 5 );
+
+
+remove_action( 'genesis_after_header','genesis_do_nav' ) ;
+ add_action( 'genesis_header_right','genesis_do_nav' );
+ add_theme_support( 'genesis-structural-wraps', array( 'header', 'menu-secondary', 'footer-widgets', 'footer' ) );//menu-primary is removed
+
+add_action( 'genesis_after_header', 'rtug_after_header' );
+
+function rtug_after_header() {
+  if(have_rows('components')):
+
+    while(have_rows('components')) : the_row();
+
+      //
+      // Slider
+      //
+      if(get_row_layout() == 'component_slider'):
+
+        get_template_part('components/slider/slider');
+
+      endif;
+
+    endwhile;
+
+  else:
+
+  endif;
+}

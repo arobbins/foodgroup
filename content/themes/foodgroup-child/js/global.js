@@ -9,17 +9,23 @@ jQuery(function( $ ){
 	    $('.site-header').removeClass('shrink');
 	  }
 	});
-    
-    $("header .genesis-nav-menu").addClass("responsive-menu").before('<div id="responsive-menu-icon"></div>');
-    
-    $("#responsive-menu-icon").click(function(){
-    	$("header .genesis-nav-menu").slideToggle();
-    });
-    
-    $(window).resize(function(){
-    	if(window.innerWidth > 600) {
-    		$("header .genesis-nav-menu").removeAttr("style");
-    	}
-    });
-	
+
+  $("header .genesis-nav-menu").addClass("responsive-menu").before('<div id="responsive-menu-icon"></div>');
+
+  $("#responsive-menu-icon").click(function(){
+  	$("header .genesis-nav-menu").slideToggle();
+  });
+
+  $(window).resize(function(){
+  	if(window.innerWidth > 600) {
+  		$("header .genesis-nav-menu").removeAttr("style");
+  	}
+  });
+
+  $(".component-video-wrapper").fitVids();
+
+  $('.component-slider').slick({
+    arrows: false
+  });
+
 });
