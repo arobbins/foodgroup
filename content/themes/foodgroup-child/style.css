@@ -2698,8 +2698,16 @@ COLORS!
   width: 76.8%;
 }
 
+.sidebar .widget-newsletter .ss-form-question {
+  width: 54%;
+}
+
 .widget-newsletter .ss-form-question input {
   width: 100%;
+}
+
+div.ss-form-entry>input {
+  background-color: white;
 }
 
 .widget-newsletter .ss-item.ss-navigate {
@@ -2714,6 +2722,10 @@ COLORS!
 .widget-newsletter .ss-item.ss-navigate tbody {
   border: none;
   padding: 0;
+}
+
+.widget-newsletter .ss-navigate.wpgform-dontsplit {
+  margin-bottom: 0;
 }
 
 .widget-newsletter #ss-submit {
