@@ -37,4 +37,17 @@ jQuery(function( $ ){
     $mobileMenu.slideToggle();
   });
 
+
+
+  $(window).resizeend({
+    delay : 250
+  }, function() {
+    if($mobileMenuIcon.hasClass('is-activated')) {
+      if($(window).width() >= 768) {
+        $mobileMenuIcon.removeClass('is-activated');
+        $mobileMenu.hide();
+      }
+    }
+  });
+
 });

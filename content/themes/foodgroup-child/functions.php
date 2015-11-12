@@ -34,6 +34,8 @@ function centric_load_scripts() {
 
 
   // Scripts
+  wp_enqueue_script( 'resizeend', get_stylesheet_directory_uri() . '/js/vendor/resizeend.min.js', array( 'jquery' ), '1.0.0', true );
+
   wp_enqueue_script( 'slick-js', '//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js', array( 'jquery' ), '1.0.0', true );
 
   wp_enqueue_script( 'fit-vids', get_stylesheet_directory_uri() . '/js/vendor/fitvids.min.js', array( 'jquery' ), '1.0.0', true );
