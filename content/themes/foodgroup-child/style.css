@@ -2649,6 +2649,14 @@ div.ss-form-entry>input {
   color: white;
 }
 
+.btn-subdued {
+  background-color: #7d7d7d;
+}
+
+.btn-subdued:hover {
+  background-color: #656565;
+}
+
 .header-navs .btn {
   padding: 0;
 }
