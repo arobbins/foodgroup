@@ -1,5 +1,8 @@
 jQuery(function( $ ){
 
+  var $mobileMenuIcon = $('.mobile-nav-icon');
+  var $mobileMenu = $('.nav-mobile');
+
 	$(".site-header").after('<div class="bumper"></div>');
 
 	$(window).scroll(function () {
@@ -26,6 +29,12 @@ jQuery(function( $ ){
 
   $('.component-slider').slick({
     arrows: false
+  });
+
+
+  $mobileMenuIcon.click(function() {
+    $(this).toggleClass('is-activated');
+    $mobileMenu.slideToggle();
   });
 
 });

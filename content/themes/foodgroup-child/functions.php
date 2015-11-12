@@ -242,6 +242,18 @@ function injectHeader() { ?>
 
     <?php wp_nav_menu(array('menu' => 'Secondary Navigation')); ?>
     <?php wp_nav_menu(array('menu' => 'Primary Navigation')); ?>
+
+    <div class="nav-mobile">
+      <?php wp_nav_menu(array('menu' => 'Mobile Navigation')); ?>
+    </div>
+
+    <div class="mobile-nav-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
   </div>
 
 <?php }
@@ -261,8 +273,10 @@ remove_action( 'genesis_after_header','genesis_do_nav' ) ;
  add_action( 'genesis_header_right','genesis_do_nav' );
  add_theme_support( 'genesis-structural-wraps', array( 'header', 'menu-secondary', 'footer-widgets', 'footer' ) );//menu-primary is removed
 
-add_action( 'genesis_after_header', 'rtug_after_header' );
 
+//
+// Inserting custom ACF components
+//
 function rtug_after_header() {
   if(have_rows('components')):
 
@@ -283,3 +297,5 @@ function rtug_after_header() {
 
   endif;
 }
+
+add_action( 'genesis_after_header', 'rtug_after_header' );
