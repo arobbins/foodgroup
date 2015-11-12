@@ -2479,12 +2479,12 @@ div.ss-form-entry>input {
 */
 .header-logo-wrap {
   float: left;
-  width: 200px;
+  width: 300px;
 }
 
 .site-header.shrink .header-logo,
 .site-header.shrink .header-logo-wrap {
-  width: 160px;
+  width: 200px;
 }
 
 .header-navs {
@@ -2501,6 +2501,10 @@ div.ss-form-entry>input {
 
 .menu-primary-navigation-container {
   margin-bottom: 0;
+}
+
+.shrink .menu-primary-navigation-container {
+  margin: 0;
 }
 
 .menu-secondary-navigation-container {
@@ -2569,7 +2573,7 @@ div.ss-form-entry>input {
 }
 
 .site-header.shrink .header-logo {
-  width: 160px;
+  width: 200px;
 }
 
 .site-header.shrink .social-sites,
@@ -2584,7 +2588,7 @@ div.ss-form-entry>input {
 
 .header-logo {
   display: block;
-  width: 200px;
+  width: 300px;
 }
 
 .site-header .wrap {
@@ -3280,6 +3284,9 @@ Media Queries
     max-width: 90%;
   }
 
+  .header-logo-wrap {
+    width: 200px;
+  }
 }
 
 @media only screen and (max-width: 782px) {
@@ -3328,11 +3335,11 @@ Media Queries
   }
 
   .header-logo {
-    width: 200px;
+    width: 250px;
   }
 
   .header-logo-wrap {
-    width: 200px;
+    width: 300px;
   }
 
   .header-navs .menu {
@@ -3346,7 +3353,7 @@ Media Queries
   }
 
   .shrink .nav-mobile {
-    top: 120px;
+    top: 104px;
   }
 
   .mobile-nav-icon {
@@ -3515,7 +3522,28 @@ Media Queries
   }
 
   .header-logo {
-    width: 160px;
+    width: 250px;
+  }
+
+}
+
+@media only screen and (max-width: 390px) {
+
+  body,
+  .home-featured .home-widgets-1 {
+    font-size: 16px;
+  }
+
+  .header-image .site-title > a {
+    background-size: contain !important;
+  }
+
+  .header-image .bumper {
+    min-height: 180px;
+  }
+
+  .header-logo {
+    width: 180px;
   }
 
 }
