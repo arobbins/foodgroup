@@ -3233,6 +3233,11 @@ Media Queries
 }
 
 @media only screen and (max-width: 850px) {
+
+  .component-how-it-works {
+    padding-top: 0;
+  }
+
   .component .wrap {
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;
