@@ -100,3 +100,25 @@ function custom_login_logo() { ?>
   </style>
 <?php }
 add_action('login_enqueue_scripts', 'custom_login_logo');
+
+
+//
+// Partners Shortcode
+//
+function show_partners() {
+
+
+
+
+
+  ob_start();
+  get_template_part('templates/layout-partners');
+  $var = ob_get_contents();
+  ob_end_clean();
+  return $var;
+
+  // $test = "<h1>hihi</h1>";
+  // return $test;
+
+}
+add_shortcode('partners', 'show_partners');

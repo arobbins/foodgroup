@@ -657,7 +657,7 @@ Structure and Layout
 
 .content-sidebar-wrap {
   margin: 0 auto;
-  width: 90%;
+  width: 80%;
 }
 
 .content-sidebar .content {
@@ -2905,7 +2905,7 @@ Components
 .slide-wrapper.slick-slide,
 .slide-wrapper,
 .component-slider {
-  min-height: 600px;
+  min-height: 500px;
 }
 
 .slide-wrapper {
@@ -3513,6 +3513,33 @@ Media Queries
   }
 
 }
+
+
+.partner-logo {
+  max-width: 230px;
+}
+
+.entry-content .partner-list,
+.partner-list {
+  float: left;
+  width: 100%;
+  list-style: none;
+}
+
+.entry-content .partner-list-item,
+.partner-list-item {
+  float: left;
+  list-style: none;
+}
+
+.partner-logo-link {
+  display: block;
+}
+
+
+
+
+
 
 @media only screen and (max-width: 480px) {
 
