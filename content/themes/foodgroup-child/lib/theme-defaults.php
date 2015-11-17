@@ -107,18 +107,59 @@ add_action('login_enqueue_scripts', 'custom_login_logo');
 //
 function show_partners() {
 
-
-
-
-
   ob_start();
   get_template_part('templates/layout-partners');
-  $var = ob_get_contents();
+  $content = ob_get_contents();
   ob_end_clean();
-  return $var;
-
-  // $test = "<h1>hihi</h1>";
-  // return $test;
+  return $content;
 
 }
 add_shortcode('partners', 'show_partners');
+
+
+//
+// Staff Shortcode
+//
+function show_staff( $atts ) {
+
+  $staff_atts = shortcode_atts( array(
+    'type' => 'All'
+  ), $atts);
+
+  ob_start();
+  include(STYLESHEETPATH . '/templates/layout-staff.php');
+  $content = ob_get_clean();
+  return $content;
+
+}
+add_shortcode( 'staff', 'show_staff' );
+
+
+//
+// Publications Shortcode
+//
+function show_publications() {
+
+  ob_start();
+  get_template_part('templates/layout-publications');
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+
+}
+add_shortcode('publications', 'show_publications');
+
+
+//
+// Publications Shortcode
+//
+function show_recipes() {
+
+  ob_start();
+  get_template_part('templates/layout-recipes');
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+
+}
+add_shortcode('recipes', 'show_recipes');
