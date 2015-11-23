@@ -2423,7 +2423,7 @@ div.ss-form-entry>input {
   margin-top: 1em;
 }
 
-.sidebar .wpgform-dontsplit {
+.sidebar .ss-navigate.wpgform-dontsplit {
   margin-left: 1em;
 }
 
