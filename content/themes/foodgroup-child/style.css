@@ -2386,7 +2386,7 @@ COLORS!
 
 .widget-newsletter .ss-form-question {
   float: left;
-  /*width: 76.8%;*/
+  width: 100%;
 }
 
 .sidebar .widget-newsletter .ss-form-question {
