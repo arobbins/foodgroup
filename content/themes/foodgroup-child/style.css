@@ -211,13 +211,11 @@ textarea:focus,
 }
 
 ::-moz-selection {
-	background-color: #2e2f33;
-	color: #fff;
+	background-color: #ddd;
 }
 
 ::selection {
-	background-color: #2e2f33;
-	color: #fff;
+	background-color: #ddd;
 }
 
 a {
@@ -2418,6 +2416,18 @@ div.ss-form-entry>input {
 }
 
 .widget-newsletter .ss-navigate.wpgform-dontsplit {
+  margin-bottom: 0;
+}
+
+.footer-widgets .widget-newsletter .ss-navigate.wpgform-dontsplit {
+  margin-top: 1em;
+}
+
+.sidebar .wpgform-dontsplit {
+  margin-left: 1em;
+}
+
+.sidebar .wpgform-dontsplit table {
   margin-bottom: 0;
 }
 

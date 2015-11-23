@@ -1,13 +1,11 @@
 <?php
 
-
-
 remove_action('wp_head', 'genesis_load_favicon');
 
 function load_new_favicons() {
 
-  //* Use WP site icon, if available
-  if ( function_exists( 'has_site_icon' ) && has_site_icon() ) {
+  // Use WP site icon, if available
+  if (function_exists('has_site_icon') && has_site_icon()) {
     return;
   }
 
@@ -17,43 +15,7 @@ function load_new_favicons() {
 
 }
 
-add_action( 'wp_head', 'load_new_favicons' );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+add_action('wp_head', 'load_new_favicons');
 
 
 //* Centric Theme Setting Defaults
