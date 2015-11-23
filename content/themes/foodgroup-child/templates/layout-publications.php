@@ -32,20 +32,20 @@
 
   ?>
 
-</section>
+  <?php foreach($publications as $key => $value) { ?>
+    <section class="publication-category">
+      <h2 class="publication-category-title"><?php echo ucwords($key); ?></h2>
+      <ul class="publication-list">
+        <?php foreach ($value as $id) { ?>
+          <li class="publication-list-item">
+            <a href="<?php the_field('publication_file', $id); ?>" class="publication-link">
+              <span class="publication-title"><?php the_field('publication_title', $id); ?></span>
+            </a>
+            <i class="fa fa-file-pdf-o"></i>
+          </li>
+        <?php } ?>
+      </ul>
+    </section>
+  <?php } ?>
 
-<?php foreach($publications as $key => $value) { ?>
-  <section class="publication-category">
-    <h2 class="publication-category-title"><?php echo ucwords($key); ?></h2>
-    <ul class="publication-list">
-      <?php foreach ($value as $id) { ?>
-        <li class="publication-list-item">
-          <a href="<?php the_field('publication_file', $id); ?>" class="publication-link">
-            <span class="publication-title"><?php the_field('publication_title', $id); ?></span>
-          </a>
-          <i class="fa fa-file-pdf-o"></i>
-        </li>
-      <?php } ?>
-    </ul>
-  </section>
-<?php } ?>
+</section>

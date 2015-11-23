@@ -301,3 +301,82 @@ function rtug_after_header() {
 }
 
 add_action( 'genesis_after_header', 'rtug_after_header' );
+
+
+//
+// Grabbing recipe categories to load into recipe selection
+//
+function acf_load_icon_field_choices_location_cats($field) {
+
+  // reset choices
+  $field['choices'] = array();
+
+  // if has rows
+  if( have_rows('global_recipes', 'option') ) {
+
+    // while has rows
+    while( have_rows('global_recipes', 'option') ) {
+
+      // instantiate row
+      the_row();
+
+      // vars
+      $value = get_sub_field('global_recipe_category');
+      $label = get_sub_field('global_recipe_category');
+
+      // append to choices
+      $field['choices'][ $value ] = $label;
+
+    }
+
+  }
+
+  // return the field
+  return $field;
+
+
+}
+
+add_filter('acf/load_field/name=recipe_category', 'acf_load_icon_field_choices_location_cats');
+
+
+//
+// Grabbing recipe categories to load into recipe selection
+//
+function acf_load_icon_field_choices_cat_image($field) {
+  // print_r($field);
+  // reset choices
+  $field['choices'] = array();
+
+  // if has rows
+  if( have_rows('global_recipes', 'option') ) {
+
+    // while has rows
+    while( have_rows('global_recipes', 'option') ) {
+
+      // instantiate row
+      the_row();
+
+      // vars
+
+      $img = get_sub_field('global_recipe_image');
+      $label = get_sub_field('global_recipe_category');
+
+      // append to choices
+      $field['choices'][$img] = $label;
+
+      // echo "<pre>";
+      // print_r($field['choices']);
+      // echo "</pre>";
+
+    }
+
+  }
+
+  // return the field
+  return $field;
+
+
+}
+
+add_filter('acf/load_field/name=recipe_category_image', 'acf_load_icon_field_choices_cat_image');

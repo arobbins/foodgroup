@@ -15,12 +15,14 @@
         $my_posts->the_post();
 
         $recipeCategory = get_field('recipe_category');
+        $recipeCategoryImage = get_field('recipe_category_image');
 
         if(array_key_exists($recipeCategory, $recipes)) {
-          array_push($recipes[$recipeCategory], get_the_id());
+          $recipes[$recipeCategory]['recipes'][] = get_the_id();
 
         } else {
-          $recipes[$recipeCategory][] = get_the_id();
+          $recipes[$recipeCategory]['recipes'][] = get_the_id();
+          $recipes[$recipeCategory]['image'] = $recipeCategoryImage;
 
         }
 
@@ -36,10 +38,14 @@
   ?>
 
 <?php foreach($recipes as $key => $value) { ?>
+
   <section class="recipe-category">
+
+    <img src="<?php echo $value['image']; ?>" alt="<?php echo ucwords($key); ?> Category">
+
     <h2 class="recipe-category-title"><?php echo ucwords($key); ?></h2>
     <ul class="recipe-list">
-      <?php foreach ($value as $id) { ?>
+      <?php foreach ($value['recipes'] as $id) { ?>
         <li class="recipe-list-item">
 
           <?php if(get_field('recipe_new', $id)) { ?>
@@ -55,6 +61,7 @@
       <?php } ?>
     </ul>
   </section>
+
 <?php } ?>
 
 </section>

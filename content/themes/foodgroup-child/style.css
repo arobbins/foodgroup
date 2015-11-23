@@ -238,7 +238,7 @@ a:hover {
 }
 
 p {
-	margin: 0 0 28px;
+	margin: 0 0 20px;
 	padding: 0;
 }
 
@@ -1722,6 +1722,10 @@ Content Area
   /*padding-top: 3em;*/
 }
 
+.entry.page {
+  margin-bottom: 0;
+}
+
 .post {
 	border-bottom: 1px solid #e5e5e5;
 }
@@ -3060,10 +3064,8 @@ Components
 }
 
 
-
-
 .partner-logo {
-  max-width: 230px;
+  max-width: 100%;
 }
 
 .entry-content .staff-list,
@@ -3083,6 +3085,29 @@ Components
 .partner-list-item {
   float: left;
   list-style: none;
+}
+
+.partner-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-box-direction: column;
+  -moz-box-direction: column;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.entry-content .partner-list {
+  padding: 2em 3em;
 }
 
 .partner-logo-link {
@@ -3136,8 +3161,71 @@ Components
   margin-bottom: 0.5em;
 }
 
+.staff-list,
+.partners,
+.publications {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  -o-flex-flow: row wrap;
+  flex-wrap: wrap;
+  margin-top: 1.5em;
+}
+
+.staff-list-item {
+  margin-right: 30px;
+  -webkit-box-flex: 0 0 29%;
+  -moz-box-flex: 0 0 29%;
+  -webkit-flex: 0 0 29%;
+  -ms-flex: 0 0 29%;
+  flex: 0 0 29%;
+}
+
+.partner-tier,
 .publication-category {
   margin-bottom: 4em;
+  background-color: white;
+  margin-right: 30px;
+  -webkit-box-flex: 0 0 29%;
+  -moz-box-flex: 0 0 29%;
+  -webkit-flex: 0 0 29%;
+  -ms-flex: 0 0 29%;
+  flex: 0 0 29%;
+  border: 1px solid #f6323e;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.partner-tier:first-child {
+  border-color: #f0a72a;
+}
+
+.partner-tier:first-child .partner-tier-title {
+  background-color: #f0a72a;
+}
+
+.recipes {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  -o-flex-flow: row wrap;
+  flex-wrap: wrap;
+  margin-top: 1.5em;
+/*  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;*/
 }
 
 .recipe-list,
@@ -3150,6 +3238,15 @@ Components
   width: 100%;
 }
 
+.entry-content .publication-list {
+  margin: 0;
+  padding: 1em;
+}
+
+.entry-content .staff-list {
+  margin-top: 1.5em;
+}
+
 .publication-list-item {
   width: 100%;
 }
@@ -3159,9 +3256,21 @@ Components
   margin-bottom: 10px;
 }
 
+.partner-tier-title,
+.publication-category-title {
+  color: white;
+  background-color: #f6323e;
+  padding: 20px 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
 .entry-content .recipe-list {
   float: left;
   margin-bottom: 3em;
+  margin-left: 0;
 }
 
 .recipe-link {
@@ -3169,17 +3278,16 @@ Components
 }
 
 .recipe-category {
-  float: left;
-  width: 31%;
+  -webkit-box-flex: 0 0 30%;
+  -moz-box-flex: 0 0 30%;
+  -webkit-flex: 0 0 30%;
+  -ms-flex: 0 0 30%;
+  flex: 0 0 30%;
   margin-right: 30px;
 }
 
 .recipe-category:nth-child(3n+3) {
   margin-right: 0;
-}
-
-.recipe-category:nth-child(4n+4) {
-  clear: left;
 }
 
 .recipe-new {
@@ -3199,14 +3307,6 @@ Components
   margin-left: 5px;
   color: #7d7d7d;
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -3417,8 +3517,42 @@ Media Queries
   }
 
   .recipe-category {
-    width: 100%;
+    -webkit-box-flex: 0 0 46%;
+    -moz-box-flex: 0 0 46%;
+    -webkit-flex: 0 0 46%;
+    -ms-flex: 0 0 46%;
+    flex: 0 0 46%;
+    margin-right: 30px;
   }
+
+  .recipe-category:nth-child(3n+3) {
+    margin-right: 30px;
+  }
+
+  .recipe-category:nth-child(even) {
+    margin-right: 0;
+  }
+
+  .partner-tier,
+  .publication-category {
+    -webkit-box-flex: 0 0 46%;
+    -moz-box-flex: 0 0 46%;
+    -webkit-flex: 0 0 46%;
+    -ms-flex: 0 0 46%;
+    flex: 0 0 46%;
+    margin-right: 30px;
+  }
+
+  .partner-tier:nth-child(3n+3),
+  .publication-category:nth-child(3n+3) {
+    margin-right: 30px;
+  }
+
+  .partner-tier:nth-child(even),
+  .publication-category:nth-child(even) {
+    margin-right: 0;
+  }
+
 }
 
 @media only screen and (max-width: 850px) {
@@ -3687,6 +3821,28 @@ Media Queries
     font-size: 20px;
     height: 20px;
     width: 20px;
+  }
+
+}
+
+
+@media only screen and (max-width: 600px) {
+
+  .partner-tier,
+  .publication-category,
+  .recipe-category {
+    -webkit-box-flex: 0 0 100%;
+    -moz-box-flex: 0 0 100%;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    margin-right: 0
+  }
+
+  .partner-tier:nth-child(3n+3),
+  .publication-category:nth-child(3n+3),
+  .recipe-category:nth-child(3n+3) {
+    margin-right: 0;
   }
 
 }

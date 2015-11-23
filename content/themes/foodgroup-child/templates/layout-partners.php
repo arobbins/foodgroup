@@ -42,8 +42,6 @@
     endif;
 
     krsort($partners);
-    // print_r($tiers);
-    // print_r($partners);
 
   ?>
 
