@@ -3217,6 +3217,17 @@ Components
 Media Queries
 ---------------------------------------------------------------------------------------------------- */
 
+@media only screen and (max-width: 1500px) {
+  .sidebar .widget-newsletter .ss-form-question {
+    width: 100%;
+  }
+
+  .sidebar .ss-navigate.wpgform-dontsplit {
+    margin-top: 1em;
+    margin-left: 0;
+  }
+}
+
 @media only screen and (max-width: 1360px) {
 
   .home-widgets .featuredpage .widget-wrap,
