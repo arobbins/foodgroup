@@ -30,24 +30,13 @@ jQuery(function( $ ){
 
 
 
-
-
-
-
-
-
-
   $('.component-slider').imagesLoaded(function() {
-    console.log('images loaded');
 
     $('.component-slider').fadeIn(500).slick({
       arrows: false
     });
 
   });
-
-
-
 
 
 
