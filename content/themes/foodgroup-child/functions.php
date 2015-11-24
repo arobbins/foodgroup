@@ -40,6 +40,8 @@ function centric_load_scripts() {
 
   wp_enqueue_script( 'fit-vids', get_stylesheet_directory_uri() . '/js/vendor/fitvids.min.js', array( 'jquery' ), '1.0.0', true );
 
+  wp_enqueue_script( 'images-loaded', get_stylesheet_directory_uri() . '/js/vendor/imagesloaded.pkgd.min.js', array( 'jquery' ), '1.0.0', true );
+
 	wp_enqueue_script( 'centric-global', get_bloginfo('stylesheet_directory' ) . '/js/global.js', array( 'jquery' ), '1.0.0', true );
 
 }
@@ -380,3 +382,18 @@ function acf_load_icon_field_choices_cat_image($field) {
 }
 
 add_filter('acf/load_field/name=recipe_category_image', 'acf_load_icon_field_choices_cat_image');
+
+
+//
+// Get Children of specified page
+//
+function getPageChildren($page_id, $post_type = 'page') {
+  // Set up the objects needed
+  $custom_wp_query = new WP_Query();
+  $all_wp_pages    = $custom_wp_query->query( array( 'post_type' => $post_type, 'posts_per_page' => -1 ) );
+
+  // Filter through all pages and find specified page's children
+  $page_children = get_page_children( $page_id, $all_wp_pages );
+
+  return $page_children;
+}

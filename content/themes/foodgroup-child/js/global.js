@@ -27,16 +27,34 @@ jQuery(function( $ ){
 
   $(".component-video-wrapper").fitVids();
 
-  $('.component-slider').slick({
-    arrows: false
+
+
+
+
+
+
+
+
+
+
+  $('.component-slider').imagesLoaded(function() {
+    console.log('images loaded');
+
+    $('.component-slider').fadeIn(500).slick({
+      arrows: false
+    });
+
   });
+
+
+
+
 
 
   $mobileMenuIcon.click(function() {
     $(this).toggleClass('is-activated');
     $mobileMenu.slideToggle();
   });
-
 
 
   $(window).resizeend({
@@ -49,5 +67,6 @@ jQuery(function( $ ){
       }
     }
   });
+
 
 });

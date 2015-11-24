@@ -6,10 +6,11 @@
     $staffType = $staff_atts['type'];
 
     $my_posts = new WP_Query(array(
-      'post_type' => 'staff',
-      'showposts' => -1
+      'post_type'   => 'staff',
+      'showposts'   => -1,
+      'orderby'     => 'title',
+      'order'       => 'ASC'
     ));
-
 
     if($my_posts->have_posts()) :
 

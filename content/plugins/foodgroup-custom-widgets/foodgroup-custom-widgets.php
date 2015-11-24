@@ -91,18 +91,44 @@ add_action('widgets_init', 'wp_newsletter_widget');
 
 
 
+//
+// Subnav Widget
+//
+class SubnavWidget extends WP_Widget {
 
+  function SubnavWidget() {
+    // Instantiate the parent object
+    parent::__construct(false, 'Subnav Widget');
+  }
 
+  function widget($args, $instance) {
+    // Widget output
+    extract($args);
+    $title = apply_filters('widget_title', $instance['title']);
 
+    require('widgets/subnav/subnav.php');
+  }
 
+  function update($new_instance, $old_instance) {
+    // Save widget options
+    $instance = $old_instance;
+    $instance['title'] = strip_tags($new_instance['title']);
 
+    return $instance;
+  }
 
+  function form($instance) {
+    // Output admin widget options form
+    $title = esc_attr($instance['title']);
 
+    require('widgets/subnav/subnav-fields.php');
+  }
+}
 
+function wp_subnav_widget() {
+  register_widget('SubnavWidget');
+}
 
-
-
-
-
+add_action('widgets_init', 'wp_subnav_widget');
 
 ?>

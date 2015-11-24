@@ -2938,6 +2938,10 @@ Components
   min-height: 500px;
 }
 
+.component-slider {
+  display: none;
+}
+
 .slide-wrapper {
   position: relative;
 }
@@ -3116,7 +3120,6 @@ Components
 
 .staff-list-item {
   width: 33.3%;
-  padding-right: 2em;
   margin-bottom: 2em;
   display: -webkit-box;
   display: -moz-box;
@@ -3138,6 +3141,7 @@ Components
 
 .staff-list-item:nth-child(3n+3) {
   padding-right: 0;
+  margin-right: 0;
 }
 
 .staff-info {
@@ -3174,6 +3178,10 @@ Components
   -ms-flex-flow: row wrap;
   -o-flex-flow: row wrap;
   flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-top: 1.5em;
 }
 
@@ -3221,6 +3229,10 @@ Components
   -ms-flex-flow: row wrap;
   -o-flex-flow: row wrap;
   flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-top: 1.5em;
 /*  -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -3245,6 +3257,10 @@ Components
 
 .entry-content .staff-list {
   margin-top: 1.5em;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .publication-list-item {
@@ -3309,8 +3325,16 @@ Components
 }
 
 
+.widget-subnav-list-item-link {
+  display: block;
+  width: 100%;
+  padding: 1em 0;
+}
 
-
+li.widget-subnav-list-item {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
 
 /*
@@ -3534,7 +3558,8 @@ Media Queries
   }
 
   .partner-tier,
-  .publication-category {
+  .publication-category,
+  .staff-list-item {
     -webkit-box-flex: 0 0 46%;
     -moz-box-flex: 0 0 46%;
     -webkit-flex: 0 0 46%;
@@ -3544,12 +3569,14 @@ Media Queries
   }
 
   .partner-tier:nth-child(3n+3),
-  .publication-category:nth-child(3n+3) {
+  .publication-category:nth-child(3n+3),
+  .staff-list-item:nth-child(3n+3) {
     margin-right: 30px;
   }
 
   .partner-tier:nth-child(even),
-  .publication-category:nth-child(even) {
+  .publication-category:nth-child(even),
+  .staff-list-item:nth-child(even) {
     margin-right: 0;
   }
 
@@ -3830,7 +3857,8 @@ Media Queries
 
   .partner-tier,
   .publication-category,
-  .recipe-category {
+  .recipe-category,
+  .staff-list-item {
     -webkit-box-flex: 0 0 100%;
     -moz-box-flex: 0 0 100%;
     -webkit-flex: 0 0 100%;
@@ -3841,7 +3869,8 @@ Media Queries
 
   .partner-tier:nth-child(3n+3),
   .publication-category:nth-child(3n+3),
-  .recipe-category:nth-child(3n+3) {
+  .recipe-category:nth-child(3n+3),
+  .staff-list-item:nth-child(3n+3) {
     margin-right: 0;
   }
 
