@@ -3747,7 +3747,7 @@ Media Queries
 
   .bumper {
     width: 120px;
-    min-height: 120px;
+    min-height: 100px;
   }
 
   .header-logo {
@@ -3799,13 +3799,17 @@ Media Queries
     top: 40px;
   }
 
+  .site-header {
+    min-height: 100px;
+  }
+
   .site-header .wrap {
     min-height: 100px;
     padding: 0 2em;
   }
 
   .admin-bar .site-header {
-    top: 46px;
+    top: 0px;
     z-index: 499;
   }
 
