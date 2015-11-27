@@ -3809,8 +3809,12 @@ Media Queries
   }
 
   .admin-bar .site-header {
-    top: 0px;
+    top: 46px;
     z-index: 499;
+  }
+
+  .admin-bar .site-header.shrink {
+    top: 0;
   }
 
   .responsive-menu {
