@@ -58,7 +58,7 @@ jQuery(function( $ ){
 
   var createPlaceholderText = function() {
     var $hiddenElement = $('.ss-secondary-text');
-    var placeholder = $hiddenElement.text();
+    var placeholder = $hiddenElement.html();
 
     $('.ss-secondary-text').parent().next().attr("placeholder", placeholder);
   }
