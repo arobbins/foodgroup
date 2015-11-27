@@ -2406,6 +2406,10 @@ div.ss-form-entry>input {
   background-color: white;
 }
 
+.ss-secondary-text {
+  display: none;
+}
+
 .widget-newsletter .ss-item.ss-navigate {
   float: left !important;
 }

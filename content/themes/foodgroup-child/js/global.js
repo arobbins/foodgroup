@@ -39,7 +39,6 @@ jQuery(function( $ ){
   });
 
 
-
   $mobileMenuIcon.click(function() {
     $(this).toggleClass('is-activated');
     $mobileMenu.slideToggle();
@@ -57,5 +56,12 @@ jQuery(function( $ ){
     }
   });
 
+  var createPlaceholderText = function() {
+    var $hiddenElement = $('.ss-secondary-text');
+    var placeholder = $hiddenElement.text();
+
+    $('.ss-secondary-text').parent().next().attr("placeholder", placeholder);
+  }
+  createPlaceholderText();
 
 });
