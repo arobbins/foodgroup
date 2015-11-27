@@ -238,6 +238,14 @@ a:hover {
 	color: #2e2f33;
 }
 
+hr {
+  margin: 1.5em 0;
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 p {
 	margin: 0 0 20px;
 	padding: 0;
@@ -291,12 +299,13 @@ h5,
 h6 {
 	font-family: 'Museo', sans-serif;
 	font-weight: 700;
-	line-height: 1.2;
-	margin: 0 0 15px;
+	line-height: 1.4;
+	margin: 0 0 0.2em;
 }
 
 h1 {
 	font-size: 34px;
+  line-height: 1.2;
 }
 
 h2 {
@@ -324,6 +333,10 @@ h5 {
 
 h6 {
 	font-size: 16px;
+}
+
+h2 + h4 {
+  margin-top: 1em;
 }
 
 /* Icons
@@ -455,16 +468,13 @@ input[type="radio"] {
 	width: auto;
 }
 
-::-moz-placeholder {
-	color: #2e2f33;
-	opacity: 1;
-	font-weight: 300;
+::-webkit-input-placeholder,
+:-moz-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder {
+   color: #ddd;
 }
 
-::-webkit-input-placeholder {
-	color: #2e2f33;
-	font-weight: 300;
-}
 
 button,
 input[type="button"],
@@ -671,7 +681,7 @@ Structure and Layout
 
 .content-sidebar-wrap {
   margin: 0 auto;
-  width: 80%;
+  width: 85%;
   max-width: 1400px;
 }
 
@@ -1953,7 +1963,9 @@ Sidebars
 
 .sidebar ul > li:last-child {
 	margin-bottom: 0;
+  border-bottom: 0;
 }
+
 
 .sidebar .widget {
 	/*padding: 0 40px;*/
@@ -3201,7 +3213,7 @@ Components
 
 .partner-tier,
 .publication-category {
-  margin-bottom: 4em;
+  margin-bottom: 2em;
   background-color: white;
   margin-right: 30px;
   -webkit-box-flex: 0 0 29%;
@@ -3281,7 +3293,7 @@ Components
 .publication-category-title {
   color: white;
   background-color: #f6323e;
-  padding: 20px 15px;
+  padding: 10px 15px;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: bold;
@@ -3722,7 +3734,7 @@ Media Queries
 
   .sidebar-content .sidebar,
   .single .content {
-    padding: 2em 0;
+    padding: 0 0 2em 0;
     border-right: none;
   }
 
