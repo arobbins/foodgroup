@@ -3763,17 +3763,13 @@ Media Queries
   }
 
   .nav-mobile {
-    top: 160px;
+    top: 100px;
     position: absolute;
     background: white;
   }
 
   .shrink .nav-mobile {
     top: 104px;
-  }
-
-  .mobile-nav-icon {
-    display: block;
   }
 
   .nav-mobile .menu .menu-item,
@@ -3793,7 +3789,8 @@ Media Queries
   }
 
   .mobile-nav-icon {
-    top: 75px;
+    display: block;
+    top: 40px;
     right: 30px;
     position: absolute;
   }
@@ -3803,7 +3800,7 @@ Media Queries
   }
 
   .site-header .wrap {
-    min-height: 160px;
+    min-height: 100px;
     padding: 0 2em;
   }
 
