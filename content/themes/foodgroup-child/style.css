@@ -2416,6 +2416,7 @@ COLORS!
 
 div.ss-form-entry>input {
   background-color: #F1F1F1 !important;
+  border: none !important;
 }
 
 .ss-secondary-text {
