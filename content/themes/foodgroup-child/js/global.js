@@ -16,7 +16,7 @@ jQuery(function( $ ){
   $("header .genesis-nav-menu").addClass("responsive-menu").before('<div id="responsive-menu-icon"></div>');
 
   $("#responsive-menu-icon").click(function(){
-  	$("header .genesis-nav-menu").slideToggle();
+  	$("header .genesis-nav-menu").slideToggle(250);
   });
 
   $(window).resize(function(){
@@ -41,7 +41,7 @@ jQuery(function( $ ){
 
   $mobileMenuIcon.click(function() {
     $(this).toggleClass('is-activated');
-    $mobileMenu.slideToggle();
+    $mobileMenu.slideToggle(250);
   });
 
 

@@ -5,9 +5,16 @@
     while(have_rows('components')) : the_row();
 
       //
+      // Default
+      //
+      if(get_row_layout() == 'component_default'):
+
+        get_template_part('components/default/default');
+
+      //
       // Illustration
       //
-      if(get_row_layout() == 'component_illustration'):
+      elseif(get_row_layout() == 'component_illustration'):
 
         get_template_part('components/illustration/illustration');
 

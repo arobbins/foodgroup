@@ -5,7 +5,7 @@
 ?>
 
 <section class="component component-featured-content">
-  <div class="wrap l-flex">
+  <div class="wrap">
 
     <section class="featured-content recent-news">
       <h2 class="featured-content-heading"><i class="fa fa-newspaper-o"></i> Recent News</h2>
