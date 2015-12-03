@@ -3,7 +3,9 @@
 
     $my_posts = new WP_Query(array(
       'post_type' => 'partners',
-      'showposts' => -1
+      'showposts' => -1,
+      'orderby'     => 'title',
+      'order'       => 'ASC'
     ));
 
     $partners = [];

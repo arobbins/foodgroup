@@ -2973,7 +2973,11 @@ div.ss-form-entry>input {
   background-color: #369b3e;
   font-size: 22px;
   letter-spacing: 1px;
+  margin-top: 1em;
+  display: inline-block;
 }
+
+
 
 .btn-slide:hover {
   background-color: #2b7d32;
@@ -3069,10 +3073,15 @@ Components
 
 .component-default {
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 .component-default .wrap {
   max-width: 78%;
+}
+
+.content-sidebar-wrap .component-default .wrap {
+  max-width: 100%;
 }
 
 .component-video-wrapper {
@@ -3280,6 +3289,10 @@ Components
 
 .slide-copy {
   width: 80%;
+}
+
+.slide-copy p {
+  margin-bottom: 0;
 }
 
 .nav-mobile {

@@ -289,11 +289,26 @@ remove_action('genesis_header','genesis_do_header');
 add_action('genesis_header','injectHeader');
 
 
-function include_custom_components() {
-  get_template_part('templates/layout', 'components');
-}
+// function include_custom_components() {
 
-add_action( 'genesis_before_footer', 'include_custom_components', 5 );
+//   $page_id = get_queried_object_id();
+//   $meta = get_post_meta($page_id);
+
+//   if(isset($meta['_genesis_layout'])) {
+//     $layoutType = $meta['_genesis_layout'];
+//     echo 'made it';
+//   } else {
+//     echo 'not made it';
+//     return;
+//   }
+
+//   if($layoutType[0] === 'full-width-content') {
+//     get_template_part('templates/layout', 'components');
+//   }
+
+// }
+
+// add_action( 'genesis_before_footer', 'include_custom_components', 5 );
 
 
 remove_action( 'genesis_after_header','genesis_do_nav' ) ;
@@ -420,3 +435,75 @@ function getPageChildren($page_id, $post_type = 'page') {
 
   return $page_children;
 }
+
+
+//
+// Adding our columns component to the end of post content
+//
+// function custom_column_content() {
+
+//   $page_id = get_queried_object_id();
+//   $meta = get_post_meta($page_id);
+
+//   if(isset($meta['_genesis_layout'])) {
+//     // return;
+//     echo 'tthere';
+//   } else {
+//     echo 'here';
+//   }
+
+// }
+
+// add_action( 'genesis_after_entry', 'custom_column_content', 9);
+
+
+
+
+function get_custom_components() {
+
+  get_template_part('templates/layout', 'components');
+
+}
+
+function get_custom_columns() {
+
+  if(have_rows('components')):
+
+    while(have_rows('components')) : the_row();
+
+      //
+      // Default
+      //
+      if(get_row_layout() == 'component_default'):
+
+        get_template_part('components/default/default');
+
+      endif;
+
+    endwhile;
+
+  else:
+
+  endif;
+
+}
+
+function include_custom_components() {
+
+  $page_id = get_queried_object_id();
+  $meta = get_post_meta($page_id);
+
+  if(isset($meta['_genesis_layout']) && $meta['_genesis_layout']) {
+
+    add_action( 'genesis_before_footer', 'get_custom_columns', 5);
+    add_action( 'genesis_before_footer', 'get_custom_components', 6);
+
+  } else {
+
+    add_action( 'genesis_after_entry', 'get_custom_columns', 5);
+    add_action( 'genesis_before_footer', 'get_custom_components', 6);
+  }
+
+}
+
+add_action( 'genesis_after_header', 'include_custom_components');
