@@ -3058,6 +3058,10 @@ Components
   padding: 3em 0;
 }
 
+.component-illustration img {
+  width: 100%;
+}
+
 .component-default,
 .component-featured-content {
   background-color: white;
