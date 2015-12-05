@@ -64,4 +64,29 @@ jQuery(function( $ ){
   }
   createPlaceholderText();
 
+  (function() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    var trident = ua.indexOf('Trident/');
+    var edge = ua.indexOf('Edge/');
+
+    if (msie > 0) {
+      $('body').addClass('is-ie');
+
+    } else if (trident > 0) {
+      $('body').addClass('is-ie');
+
+    } else if (edge > 0) {
+      $('body').addClass('is-ie');
+
+    } else {
+      $('body').addClass('isnot-ie');
+    }
+
+    if(/MSIE 9/i.test(navigator.userAgent)){
+      $('body').addClass('is-ie-9');
+    }
+
+  })();
+
 });

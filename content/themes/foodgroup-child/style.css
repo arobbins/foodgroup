@@ -1233,6 +1233,13 @@ Site Header
   min-height: 100px;
 }
 
+.is-ie .site-header.shrink .wrap {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .admin-bar .site-header {
   top: 32px;
 }
@@ -2397,6 +2404,14 @@ COLORS!
   max-width: 100%;
 }
 
+.is-ie-9 .l-col,
+.is-ie-9 .l-row,
+.is-ie-9 .l-row-reverse,
+.is-ie-9 .l-col-reverse,
+.is-ie-9 .l-flex {
+  display: block;
+}
+
 .l-grid-item p:last-child {
   margin-bottom: 0;
 }
@@ -2448,6 +2463,10 @@ COLORS!
   min-width: 0;
 }
 
+.is-ie-9 .l-fit {
+  width: 100%;
+}
+
 .l-wrap {
   -webkit-box-lines: multiple;
   -moz-box-lines: multiple;
@@ -2491,12 +2510,20 @@ COLORS!
   flex: 0 0 100%;
 }
 
+.is-ie-9 .l-grid-1 {
+  width: 100%;
+}
+
 .l-grid-2 {
   -webkit-box-flex: 0 0 50%;
   -moz-box-flex: 0 0 50%;
   -webkit-flex: 0 0 50%;
   -ms-flex: 0 0 50%;
   flex: 0 0 50%;
+}
+
+.is-ie-9 .l-grid-2 {
+  width: 50%;
 }
 
 .l-grid-3 {
@@ -2507,12 +2534,28 @@ COLORS!
   flex: 0 0 33.333333333%;
 }
 
+.is-ie .l-grid-3 {
+  -webkit-box-flex: 0 0 30%;
+  -moz-box-flex: 0 0 30%;
+  -webkit-flex: 0 0 30%;
+  -ms-flex: 0 0 30%;
+  flex: 0 0 30%;
+}
+
+.is-ie-9 .l-grid-3 {
+  width: 30%;
+}
+
 .l-grid-4 {
   -webkit-box-flex: 0 0 25%;
   -moz-box-flex: 0 0 25%;
   -webkit-flex: 0 0 25%;
   -ms-flex: 0 0 25%;
   flex: 0 0 25%;
+}
+
+.is-ie-9 .l-grid-4 {
+  width: 25%;
 }
 
 .l-grid-5 {
@@ -2523,6 +2566,10 @@ COLORS!
   flex: 0 0 20%;
 }
 
+.is-ie-9 .l-grid-5 {
+  width: 20%;
+}
+
 .l-grid-6 {
   -webkit-box-flex: 0 0 16.666666667%;
   -moz-box-flex: 0 0 16.666666667%;
@@ -2531,12 +2578,20 @@ COLORS!
   flex: 0 0 16.666666667%;
 }
 
+.is-ie-9 .l-grid-6 {
+  width: 16.666666667%;
+}
+
 .l-grid-7 {
   -webkit-box-flex: 0 0 14.285714286%;
   -moz-box-flex: 0 0 14.285714286%;
   -webkit-flex: 0 0 14.285714286%;
   -ms-flex: 0 0 14.285714286%;
   flex: 0 0 14.285714286%;
+}
+
+.is-ie-9 .l-grid-7 {
+  width: 14.285714286%;
 }
 
 .l-col-end {
@@ -2821,6 +2876,20 @@ div.ss-form-entry>input {
 .header-navs {
   float: left;
   width: 80%;
+}
+
+.is-ie-9 .header-navs {
+  float: right;
+  width: 75%;
+  margin-top: 2em;
+}
+
+.is-ie-9 .header-logo-wrap {
+  float: left;
+}
+
+.is-ie-9 .site-header.shrink .menu-primary-navigation-container {
+  margin-top: 2em;
 }
 
 .menu-secondary-navigation-container,
@@ -3171,6 +3240,11 @@ Components
   border-radius: 5px 5px 0px 0px;
 }
 
+.is-ie-9 .featured-content {
+  float: left;
+  width: 30%;
+}
+
 .featured-content:last-of-type {
   margin-right: 0;
 }
@@ -3445,6 +3519,21 @@ Components
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  -o-flex-flow: row wrap;
+  flex-wrap: wrap;
+}
+
+.partner-list-item {
+  width: 100%;
+  max-width: 100%;
+-webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  -o-flex-flow: row wrap;
+  flex-wrap: wrap;
 }
 
 .entry-content .partner-list {
@@ -3453,6 +3542,11 @@ Components
 
 .partner-logo-link {
   display: block;
+}
+
+.is-ie .partner-logo-link img {
+  display: block;
+  max-width: 100%;
 }
 
 .staff-list-item {
@@ -3474,6 +3568,21 @@ Components
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.is-ie-9 .partner-tier,
+.is-ie-9 .publication-category,
+.is-ie-9 .staff-list-item {
+  float: left;
+  width: 31%;
+}
+
+.is-ie-9 .partner-tier:nth-child(3n+3),
+.is-ie-9 .publication-category:nth-child(3n+3),
+.is-ie-9 .staff-list-item:nth-child(3n+3) {
+  clear: right;
+  padding-right: 0;
+  margin-right: 0;
 }
 
 .staff-list-item:nth-child(3n+3) {
@@ -3545,6 +3654,12 @@ Components
   -moz-border-radius: 0px;
   -webkit-border-radius: 5px 5px 0px 0px;
   border-radius: 5px 5px 0px 0px;
+}
+
+.is-ie-9 .partner-tier,
+.is-ie-9 .publication-category {
+  float: left;
+  width: 29%;
 }
 
 .partner-tier:first-child {
@@ -3639,8 +3754,19 @@ Components
   margin-right: 30px;
 }
 
+.is-ie-9 .recipe-category {
+  display: block;
+  float: left;
+  width: 30%;
+  min-height: 400px;
+}
+
 .recipe-category:nth-child(3n+3) {
   margin-right: 0;
+}
+
+.is-ie-9 .recipe-list {
+  margin-bottom: 0;
 }
 
 .recipe-new {
@@ -4249,6 +4375,8 @@ Media Queries
   .shrink .site-title {
     font-size: 24px;
   }
+
+
 
   .shrink .site-title a,
   .shrink .site-title a:hover {
