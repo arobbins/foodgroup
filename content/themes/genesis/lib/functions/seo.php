@@ -26,8 +26,6 @@
  * @see genesis_add_inpost_seo_save()
  * @see genesis_add_taxonomy_seo_options()
  * @see genesis_user_seo_fields()
- *
- * @uses GENESIS_SEO_SETTINGS_FIELD
  */
 function genesis_disable_seo() {
 
@@ -64,14 +62,13 @@ function genesis_disable_seo() {
  *
  * @since 1.8.0
  *
- * @uses GENESIS_SEO_DISABLED
- *
- * @return bool True if Genesis SEO is disabled, false otherwise.
+ * @return bool `true` if Genesis SEO is disabled, `false` otherwise.
  */
 function genesis_seo_disabled() {
 
-	if ( defined( 'GENESIS_SEO_DISABLED' ) && GENESIS_SEO_DISABLED )
+	if ( defined( 'GENESIS_SEO_DISABLED' ) && GENESIS_SEO_DISABLED ) {
 		return true;
+	}
 
 	return false;
 
@@ -87,48 +84,19 @@ add_action( 'after_setup_theme', 'genesis_seo_compatibility_check' );
  * @since 1.2.0
  *
  * @see genesis_default_title()
- *
- * @uses genesis_detect_seo_plugins() Detect certain SEO plugins.
- * @uses genesis_disable_seo()        Disable all aspects of Genesis SEO features.
  */
 function genesis_seo_compatibility_check() {
 
-	if ( genesis_detect_seo_plugins() )
+	if ( genesis_detect_seo_plugins() ) {
 		genesis_disable_seo();
+	}
 
-	//* Disable Genesis <title> generation if SEO Title Tag is active
+	// Disable Genesis <title> generation if SEO Title Tag is active.
 	if ( function_exists( 'seo_title_tag' ) ) {
 		remove_filter( 'wp_title', 'genesis_default_title', 10, 3 );
 		remove_action( 'genesis_title', 'wp_title' );
 		add_action( 'genesis_title', 'seo_title_tag' );
 	}
-
-}
-
-add_action( 'admin_notices', 'genesis_scribe_nag' );
-/**
- * Display admin notice for Scribe SEO Copywriting tool.
- *
- * @since 1.4.0
- *
- * @link http://scribeseo.com/
- *
- * @uses genesis_is_menu_page()  Check that we're targeting a specific Genesis admin page.
- * @uses genesis_detect_plugin() Detect active plugin by constant, class or function existence.
- *
- * @return null Return early if not on the SEO Settings page, Scribe is installed, or it has already been dismissed.
- */
-function genesis_scribe_nag() {
-
-	if ( ! genesis_is_menu_page( 'seo-settings' ) )
-		return;
-
-	if ( genesis_detect_plugin( array( 'classes' => array( 'Ecordia' ) ) ) || get_option( 'genesis-scribe-nag-disabled' ) )
-		return;
-
-	$copy = sprintf( __( 'Have you tried our Scribe content marketing software? Do research, content and website optimization, and relationship building without leaving WordPress. <strong>Genesis owners save big when using the special link on the special page we\'ve created just for you</strong>. <a href="%s" target="_blank">Click here for more info on Scribe<span class="screen-reader-text">. %s</span></a>.', 'genesis' ), 'http://scribecontent.com/genesis-owners-only', __( 'Link opens in a new window.', 'genesis' ) );
-	$url = add_query_arg( 'dismiss-scribe', 'true', menu_page_url( 'seo-settings', false ) );
-	printf( '<div class="scribe-nag updated"><p class="alignleft">%s</p> <p class="alignright"><a href="%s">%s</a></p></div>', $copy, esc_url( $url ), __( 'Dismiss', 'genesis' ) );
 
 }
 
@@ -140,19 +108,18 @@ add_action( 'admin_init', 'genesis_disable_scribe_nag' );
  *
  * @since 1.4.0
  *
- * @uses genesis_is_menu_page()   Check that we're targeting a specific Genesis admin page.
- * @uses genesis_admin_redirect() Redirect to SEO Settings page after dismissing.
- *
- * @return null Return early if not on the SEO Settings page, or dismiss-scribe querystring argument not present and set
- *              to true.
+ * @return null Return early if not on the SEO Settings page, or `dismiss-scribe` querystring argument
+ *              not present and set to `'true'`.
  */
 function genesis_disable_scribe_nag() {
 
-	if ( ! genesis_is_menu_page( 'seo-settings' ) )
+	if ( ! genesis_is_menu_page( 'seo-settings' ) ) {
 		return;
+	}
 
-	if ( ! isset( $_REQUEST['dismiss-scribe'] ) || 'true' !== $_REQUEST['dismiss-scribe'] )
+	if ( ! isset( $_REQUEST['dismiss-scribe'] ) || 'true' !== $_REQUEST['dismiss-scribe'] ) {
 		return;
+	}
 
 	update_option( 'genesis-scribe-nag-disabled', 1 );
 
@@ -164,13 +131,11 @@ function genesis_disable_scribe_nag() {
 /**
  * Detect some SEO Plugin that add constants, classes or functions.
  *
- * Applies `genesis_detect_seo_plugins` filter to allow third party manpulation of SEO plugin list.
+ * Applies `genesis_detect_seo_plugins` filter to allow third party manipulation of SEO plugin list.
  *
  * @since 1.6.0
  *
- * @uses genesis_detect_plugin() Detect active plugin by constant, class or function existence.
- *
- * @return boolean True if plugin exists or false if plugin constant, class or function not detected.
+ * @return bool `true` if plugin exists, or `false` if plugin constant, class or function not detected.
  */
 function genesis_detect_seo_plugins() {
 
@@ -178,7 +143,7 @@ function genesis_detect_seo_plugins() {
 		// Use this filter to adjust plugin tests.
 		apply_filters(
 			'genesis_detect_seo_plugins',
-			//* Add to this array to add new plugin checks.
+			// Add to this array to add new plugin checks.
 			array(
 
 				// Classes to detect.

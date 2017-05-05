@@ -3851,6 +3851,13 @@ input[value="Search"] {
   color: #323232;
 }
 
+.widget_recent_entries {
+  display: none;
+}
+
+.single .widget_recent_entries {
+  display: block;
+}
 
 
 /*
@@ -4562,4 +4569,15 @@ Media Queries
     width: 180px;
   }
 
+}
+
+
+.slick-initialized .slick-slide {
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+
+.slick-arrow {
+  display: none !important;
 }

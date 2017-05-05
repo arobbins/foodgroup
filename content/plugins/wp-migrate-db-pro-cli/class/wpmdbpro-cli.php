@@ -33,6 +33,9 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 		$this->wpmdb    = &$this->wpmdbpro;
 		$this->wpmdbpro = $wpmdbpro;
 
+		// announce extra args
+		add_filter( 'wpmdb_cli_filter_get_extra_args', array( $this, 'filter_extra_args' ), 10, 1 );
+
 		// process push/pull profile args
 		add_filter( 'wpmdb_cli_filter_get_profile_data_from_args', array( $this, 'add_extra_args_for_addon_migrations' ), 10, 3 );
 
@@ -60,9 +63,6 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 		// check remote for MF plugin after remote connection has been made
 		add_filter( 'wpmdb_cli_filter_before_cli_initiate_migration', array( $this, 'check_remote_wpmdbpro_media_files_before_migration' ), 20, 1 );
 
-		// run ajax_finalize_migration
-		add_filter( 'wpmdb_cli_finalize_migration_response', array( $this, 'finalize_ajax' ), 10, 1 );
-
 		// flush rewrite rules
 		add_filter( 'wpmdb_cli_finalize_migration_response', array( $this, 'finalize_flush' ), 20, 1 );
 
@@ -81,6 +81,9 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 		// add delay between requests
 		add_action( 'wpmdb_before_remote_post', array( $this, 'do_delay_between_requests' ), 10, 0 );
 		add_action( 'wpmdb_media_files_cli_before_migrate_media', array( $this, 'do_delay_between_requests' ), 10, 0 );
+
+		// Compare table prefixes and display error if mismatch
+		add_action( 'wpmdb_cli_before_migration', array( $this, 'handle_prefix_mismatch' ), 10, 2 );
 	}
 
 	/**
@@ -114,7 +117,6 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 		WP_CLI::log( __( 'Verifying connection...', 'wp-migrate-db-pro-cli' ) );
 
 		$connection_info = preg_split( '/\s+/', $this->profile['connection_info'] );
-
 		$remote_site_args           = $this->post_data;
 		$remote_site_args['intent'] = $this->profile['action'];
 		$remote_site_args['url']    = trim( $connection_info[0] );
@@ -206,6 +208,25 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	}
 
 	/**
+	 * Add extra CLI args used by this plugin.
+	 *
+	 * @param array $args
+	 *
+	 * @return array
+	 */
+	public function filter_extra_args( $args = array() ) {
+		$args[] = 'preserve-active-plugins';
+		$args[] = 'include-transients';
+		$args[] = 'backup';
+
+		// TODO: Move following to WPMDBPro_Media_Files_CLI along with Media Files args parsing.
+		$args[] = 'media';
+		$args[] = 'media-subsites';
+
+		return $args;
+	}
+
+	/**
 	 * Extend get_profile_data_from_args with options for push/pull
 	 * hooks on: wpmdb_cli_filter_get_profile_data_from_args
 	 *
@@ -220,7 +241,7 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 			return $profile;
 		}
 
-		if ( 'savefile' !== $assoc_args['action'] ) {
+		if ( ! in_array( $assoc_args['action'], array( 'find_replace', 'savefile' ) ) ) {
 			if ( empty( $args[0] ) || empty( $args[1] ) ) {
 				return $this->cli_error( __( 'URL and secret-key are required', 'wp-migrate-db-pro-cli' ) );
 			}
@@ -340,8 +361,7 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	 * @return array
 	 */
 	function extend_cli_migration( $profile ) {
-
-		if ( 'savefile' !== $this->profile['action'] ) {
+		if ( ! in_array( $profile['action'], array( 'find_replace', 'savefile' ) ) ) {
 			$this->remote = $this->verify_remote_connection();
 			if ( is_wp_error( $this->remote ) ) {
 				return $this->remote;
@@ -350,6 +370,8 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 			$this->post_data['gzip']       = ( '1' == $this->remote['gzip'] ) ? 1 : 0;
 			$this->post_data['bottleneck'] = $this->remote['bottleneck'];
 			$this->post_data['prefix']     = $this->remote['prefix'];
+
+			$this->post_data['site_details']['remote'] = $this->remote['site_details'];
 
 			// set delay between requests if remote has a delay
 			if ( isset( $this->remote['delay_between_requests'] ) ) {
@@ -361,26 +383,28 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 			}
 
 			// Default the find/replace pairs if nothing specified so that we don't break the target.
-			if ( empty( $this->profile['replace_old'] ) && empty( $this->profile['replace_new'] ) ) {
+			if ( empty( $profile['replace_old'] ) && empty( $profile['replace_new'] ) ) {
 				$local  = array(
-					'',
-					preg_replace( '#^https?:#', '', home_url() ),
-					$this->get_absolute_root_file_path()
+						'',
+						preg_replace( '#^https?:#', '', home_url() ),
+						$this->get_absolute_root_file_path(),
 				);
 				$remote = array(
-					'',
-					preg_replace( '#^https?:#', '', $this->remote['url'] ),
-					$this->remote['path']
+						'',
+						preg_replace( '#^https?:#', '', $this->remote['url'] ),
+						$this->remote['path'],
 				);
 
-				if ( 'push' == $this->profile['action'] ) {
-					$this->profile['replace_old'] = $local;
-					$this->profile['replace_new'] = $remote;
+				if ( 'push' == $profile['action'] ) {
+					$profile['replace_old'] = $local;
+					$profile['replace_new'] = $remote;
 				} else {
-					$this->profile['replace_old'] = $remote;
-					$this->profile['replace_new'] = $local;
+					$profile['replace_old'] = $remote;
+					$profile['replace_new'] = $local;
 				}
 				unset( $local, $remote );
+
+				$profile = apply_filters( 'wpmdb_cli_default_find_and_replace', $profile, $this->post_data );
 			}
 		}
 
@@ -447,7 +471,7 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	function check_wpmdbpro_version_before_migration( $profile ) {
 		// TODO: maybe instantiate WPMDBPro_CLI_Addon to make WPMDBPro_Addon::meets_version_requirements() available here
 		$wpmdb_pro_version = $GLOBALS['wpmdb_meta']['wp-migrate-db-pro']['version'];
-		if ( ! version_compare( $wpmdb_pro_version, '1.5.2', '>=' ) ) {
+		if ( ! version_compare( $wpmdb_pro_version, '1.7', '>=' ) ) {
 			return $this->cli_error( __( 'Please update WP Migrate DB Pro.', 'wp-migrate-db-pro-cli' ) );
 		}
 
@@ -471,6 +495,11 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 			return $this->cli_error( __( 'Profile ID missing.', 'wp-migrate-db-pro-cli' ) );
 		} elseif ( ! is_array( $profile ) ) {
 			$profile = $this->get_profile_by_key( absint( $profile ) );
+
+			// don't exclude post types if the option isn't checked
+			if( ! is_wp_error( $profile ) && ! $profile['exclude_post_types'] ) {
+				$profile['select_post_types'] = array();
+			}
 		}
 
 		return $profile;
@@ -542,23 +571,6 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	}
 
 	/**
-	 * Stub for ajax_finalize_migration()
-	 * hooks on: wpmdb_cli_finalize_migration_response
-	 *
-	 * @param string $response
-	 *
-	 * @return string
-	 */
-	function finalize_ajax( $response ) {
-		// don't send redundant POST variables
-		$args     = $this->filter_post_elements( $this->post_data, array( 'action', 'migration_state_id', 'prefix', 'tables' ) );
-		$_POST    = $args;
-		$response = $this->wpmdbpro->ajax_finalize_migration();
-
-		return trim( $response );
-	}
-
-	/**
 	 * Flush rewrite rules
 	 * hooks on: wpmdb_cli_finalize_migration_response
 	 *
@@ -585,7 +597,9 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	 * @return array
 	 */
 	function initate_migration_enable_backup( $migration_args, $profile ) {
-		$migration_args['stage'] = ( '0' == $profile['create_backup'] ) ? 'migrate' : 'backup';
+		if ( '0' != $profile['create_backup'] ) {
+			$migration_args['stage'] = 'backup';
+		}
 
 		return $migration_args;
 	}
@@ -616,7 +630,7 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 	 * @return string
 	 */
 	function modify_progress_label( $progress_label, $stage ) {
-		if ( 'savefile' !== $this->profile['action'] ) {
+		if ( 'savefile' !== $this->profile['action'] && 'find_replace' !== $this->profile['action'] ) {
 			if ( 1 === $stage ) { // 1 = backup stage, 2 = migration stage
 				$progress_label = __( 'Performing backup', 'wp-migrate-db-pro-cli' );
 			} else {
@@ -643,4 +657,105 @@ class WPMDBPro_CLI extends WPMDBPro_CLI_Export {
 		}
 	}
 
+	/**
+	 *
+	 * Detects a database prefix mismatch and displays a CLI message about it. Does not interrupt the migration.
+	 *
+	 * @param $post_data
+	 *
+	 * @return bool
+	 */
+	public function handle_prefix_mismatch( $post_data, $profile ) {
+		global $wpdb;
+
+		$local_prefix  = $wpdb->base_prefix;
+		$remote_prefix = $this->get_remote_prefix( $post_data );
+		$mismatch      = null;
+		$message       = '';
+
+		if ( ! empty( $local_prefix ) && ! empty( $remote_prefix ) ) {
+			$mismatch = false;
+
+			if ( $local_prefix !== $remote_prefix ) {
+				$mismatch = true;
+			}
+		}
+
+		$subsite_prefix_mismatch = $this->is_multisite_prefix_mismatch( $post_data, $profile, $mismatch );
+
+		if ( true === $mismatch ) {
+			if ( isset( $post_data['intent'] ) ) {
+				$message = "%Y" . __( "Database table prefix differs between installations.", 'wp-migrate-db-cli' );
+				$message .= "%n \n%R";
+
+				if ( true === $subsite_prefix_mismatch ) {
+					$message .= sprintf( __( "We have detected you have table prefix \"%s\" at %s but have \"%s\" here. Multisite Tools currently only supports migrating subsites between sites with the same base table prefix.", 'wp-migrate-db-cli' ), $remote_prefix, $post_data['site_details']['remote']['site_url'], $wpdb->base_prefix );
+				} else {
+					if ( 'push' == $post_data['intent'] ) {
+						$message .= sprintf( __( "The remote database uses a prefix of \"%s\". This migration will create new tables in the remote database with a prefix of \"%s\".  \nTo use these new tables, AFTER the migration is complete, you will need to edit the wp-config.php file on the remote server and change the \$table_prefix variable to \"%s\"", 'wp-migrate-db-cli' ), $remote_prefix, $wpdb->base_prefix, $wpdb->base_prefix );
+					} else if ( 'pull' == $post_data['intent'] ) {
+						$message .= sprintf( __( "The local database uses a prefix of \"%s\". This migration will create new tables in the local database with a prefix of \"%s\".  \nTo use these new tables, AFTER the migration is complete, you will need to edit your wp-config.php file in your local environment and change the \$table_prefix variable to \"%s\"", 'wp-migrate-db-cli' ), $wpdb->base_prefix, $remote_prefix, $remote_prefix );
+					}
+				}
+
+				$message .= "%n";
+			}
+
+			// Only display the CLI warning if invoked manually.
+			if ( ! defined( 'DOING_WPMDB_TESTS' ) ) {
+				if ( false === $subsite_prefix_mismatch ) {
+					WP_CLI::warning( WP_CLI::colorize( $message ) );
+				} else {
+					WP_CLI::error( WP_CLI::colorize( $message ) );
+				}
+			}
+		}
+
+		return $mismatch;
+	}
+
+	/**
+	 *
+	 * Returns the remote database prefix, based on global $_POST data
+	 *
+	 * @param $post_data
+	 *
+	 * @return string
+	 */
+	public function get_remote_prefix( $post_data ) {
+		$remote_prefix = '';
+
+		if ( isset( $post_data['site_details']['remote']['prefix'] ) ) {
+			$remote_prefix = $post_data['site_details']['remote']['prefix'];
+		}
+
+		return $remote_prefix;
+	}
+
+	/**
+	 *
+	 * Detects if a CLI migration is attempted from a multisite, with the --subsite option, and where the table prefixes do no match
+	 *
+	 * @param $post_data
+	 * @param $profile
+	 * @param $is_mismatch
+	 *
+	 * @return bool
+	 */
+	public function is_multisite_prefix_mismatch( $post_data, $profile, $is_mismatch ) {
+		$subsite_prefix_mismatch = false;
+		$migration_details       = $post_data['site_details'];
+
+		if ( true === $is_mismatch ) {
+			if ( isset( $migration_details['local']['is_multisite'] ) && 'true' === $migration_details['local']['is_multisite'] ) {
+				$mst_select_subsite = isset( $profile['mst_select_subsite'] ) ? $profile['mst_select_subsite'] : 0;
+
+				if ( '1' == $mst_select_subsite ) {
+					$subsite_prefix_mismatch = true; //If there is a selected subsite, and it's multisite, and there's a prefix mistmatch
+				}
+			}
+		}
+
+		return $subsite_prefix_mismatch;
+	}
 }

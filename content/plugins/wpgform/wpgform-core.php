@@ -475,10 +475,10 @@ class wpGForm
     /**
      * Constructor
      */
-    function wpGForm()
-    {
-        // empty for now
-    }
+    //function wpGForm()
+    //{
+    //    // empty for now - this syntax is deprecated in PHP7!
+    //}
 
     /**
      * 'gform' short code handler
@@ -548,7 +548,7 @@ class wpGForm
         }
 
         //  Validate columns - make sure it is a reasonable number
-
+ 
         if (is_numeric($o['columns']) && ($o['columns'] > 1) && ($o['columns'] == round($o['columns'])))
             $o['columns'] = (int)$o['columns'] ;
         else
@@ -622,7 +622,7 @@ class wpGForm
         }
 
         //  Validate columns - make sure it is a reasonable number
-
+ 
         if (is_numeric($o['columns']) && ($o['columns'] > 1) && ($o['columns'] == round($o['columns'])))
             $o['columns'] = (int)$o['columns'] ;
         else
@@ -688,7 +688,7 @@ class wpGForm
         //  If no URL then return as nothing useful can be done.
         if (!$o['form'])
         {
-            return false;
+            return false; 
         }
         else
         {
@@ -728,7 +728,7 @@ class wpGForm
 
             if (0 != $current_user->ID)
                 $user_email_sendto = $current_user->user_email ;
-
+            
             $user_email_html .= '<div class="wpgform-user-email">' ;
             $user_email_html .= sprintf('<div class="%sss-item %sss-item-required %sss-text">', $prefix, $prefix, $prefix) ;
             $user_email_html .= sprintf('<div class="%sss-form-entry">', $prefix) ;
@@ -857,7 +857,7 @@ class wpGForm
         $form = str_replace(array('&#038;','&#38;','&amp;'), '&', $form) ;
         if (!is_null($confirm))
             $confirm = str_replace(array('&#038;','&#38;','&amp;'), '&', $confirm) ;
-
+        
         //  If there were any preset values to pass into the form, add them to the URL
 
         if (!empty($presets))
@@ -880,7 +880,7 @@ class wpGForm
                 //  handle old and new Google Forms we keep both.  This may
                 //  go away once Google completely converts to the new version
                 //  of Google Forms.
-
+ 
                 $presets[$key] = urlencode($value) ;
                 //unset($presets[$key]) ;
             }
@@ -897,7 +897,7 @@ class wpGForm
         {
             if ($use_transient && is_multisite())
             {
-                if (false === ( self::$response = get_site_transient( WPGFORM_FORM_TRANSIENT.$o['id'] ) ) )
+                if (false === ( self::$response = get_site_transient( WPGFORM_FORM_TRANSIENT.$o['id'] ) ) ) 
                 {
                     // There was no transient, so let's regenerate the data and save it
                     self::$response = wp_remote_get($form, array('sslverify' => false, 'timeout' => $timeout, 'redirection' => 12, 'user-agent' => $_SERVER['HTTP_USER_AGENT'])) ;
@@ -906,7 +906,7 @@ class wpGForm
             }
             elseif ($use_transient && !is_multisite())
             {
-                if (false === ( self::$response = get_transient( WPGFORM_FORM_TRANSIENT.$o['id'] ) ) )
+                if (false === ( self::$response = get_transient( WPGFORM_FORM_TRANSIENT.$o['id'] ) ) ) 
                 {
                     // There was no transient, so let's regenerate the data and save it
                     self::$response = wp_remote_get($form, array('sslverify' => false, 'timeout' => $timeout, 'redirection' => 12, 'user-agent' => $_SERVER['HTTP_USER_AGENT'])) ;
@@ -943,7 +943,17 @@ class wpGForm
 
         }
         else
+        {
             $html = self::$response['body'] ;
+            $headers = self::$response['headers'] ;
+
+            if (WPGFORM_DEBUG)
+            {
+                wpgform_whereami(__FILE__, __LINE__, 'ConstructGoogleForm') ;
+                wpgform_preprint_r(array_keys(self::$response)) ;
+                wpgform_preprint_r($headers) ;
+            }
+        }
 
         if (WPGFORM_DEBUG)
         {
@@ -954,11 +964,17 @@ class wpGForm
 
         //  Filter the HTML unlesss explicitly told not to
 
-        if ((int)$wpgform_options['disable_html_filtering'] !== 1)
+        if ((int)$wpgform_options['disable_html_filtering'] !== 1) 
         {
+            if (WPGFORM_DEBUG)
+            {
+                wpgform_whereami(__FILE__, __LINE__, 'ConstructGoogleForm (before wp_kses())') ;
+                wpgform_htmlspecialchars_preprint_r($html) ;
+            }
+
             //  Need to filter the HTML retrieved from the form and strip off the stuff
             //  we don't want.  This gets rid of the HTML wrapper from the Google page.
-
+    
             $allowed_tags = array(
                 'a' => array('href' => array(), 'title' => array(), 'target' => array(), 'class' => array())
                ,'b' => array()
@@ -996,10 +1012,17 @@ class wpGForm
                ,'tr' => array('class' => array())
                ,'td' => array('class' => array(), 'style' => array())
             ) ;
-
+    
             //  Process the HTML
-
+    
             $html = wp_kses($html, $allowed_tags) ;
+
+            if (WPGFORM_DEBUG)
+            {
+                wpgform_whereami(__FILE__, __LINE__, 'ConstructGoogleForm (after wp_kses())') ;
+                wpgform_htmlspecialchars_preprint_r($html) ;
+            }
+
         }
 
         $patterns = array(
@@ -1100,8 +1123,8 @@ class wpGForm
         //  which contains the original action.  This action is used to submit the
         //  form via wp_remote_post().
 
-        if (preg_match_all('/(action(\\s*)=(\\s*)([\"\'])?(?(1)(.*?)\\2|([^\s\>]+)))/', $html, $matches))
-        {
+        if (preg_match_all('/(action(\\s*)=(\\s*)([\"\'])?(?(1)(.*?)\\2|([^\s\>]+)))/', $html, $matches)) 
+        { 
             for ($i=0; $i< count($matches[0]); $i++)
             {
                 $action = $matches[0][$i] ;
@@ -1110,21 +1133,24 @@ class wpGForm
             //$html = str_replace($action, 'action="' . get_permalink(get_the_ID()) . '"', $html) ;
             $html = str_replace($action, 'action=""', $html) ;
             $action = preg_replace(array('/^action=/i', '/"/'), array('', ''), $action) ;
-            $action = base64_encode(serialize($action)) ;
+
+            $action = base64_encode(json_encode($action)) ;
+
             $wgformid = self::$wpgform_form_id++ ;
+            $nonce = wp_nonce_field('wpgform_submit', 'wpgform_nonce', true, false) ;
 
             //  Add some hidden input fields to faciliate control of subsquent actions
             $html = preg_replace('/<\/form>/i',
-                "<input type=\"hidden\" value=\"{$action}\" name=\"wpgform-action\"><input type=\"hidden\" value=\"{$wgformid}\" name=\"wpgform-form-id\"></form>", $html) ;
-        }
-        else
+                $nonce . "<input type=\"hidden\" value='{$action}' name=\"wpgform-action\"><input type=\"hidden\" value=\"{$wgformid}\" name=\"wpgform-form-id\"></form>", $html) ;
+        } 
+        else 
         {
             $action = null ;
             $wgformid = self::$wpgform_form_id++ ;
         }
-
+        
         //  Handle "placeholders"
-
+ 
         $fields = wpgform_placeholder_meta_box_content(true) ;
 
         foreach ($fields as $field)
@@ -1163,17 +1189,17 @@ class wpGForm
         //  be referenced if/when needed during form processing.
 
         $html = preg_replace('/<\/form>/i', "<input type=\"hidden\" value=\"" .
-            base64_encode(serialize($o)) . "\" name=\"wpgform-options\"></form>", $html) ;
+            esc_attr(base64_encode(json_encode($o))) . "\" name=\"wpgform-options\"></form>", $html) ;
 
         //  Output custom CSS?
 
         $css = '' ;
-
+ 
         if (($wpgform_options['custom_css'] == 1) && !empty($wpgform_options['custom_css_styles']))
             $css .= '<style>' . $wpgform_options['custom_css_styles'] . '</style>' ;
 
         //  Output form specific custom CSS?
-
+ 
         if (($wpgform_options['custom_css'] == 1) && !empty($o['form_css']))
             $css .= '<style>' . $o['form_css'] . '</style>' ;
 
@@ -1399,7 +1425,7 @@ jQuery(document).ready(function($) {
             $js .= '
     }) ;' . PHP_EOL ;
         }
-
+ 
         //  Handle hidden fields
 
         $u = wp_get_current_user() ;
@@ -1419,7 +1445,7 @@ jQuery(document).ready(function($) {
 
         //  We'll ignore the optional value for any field type except value, url, or timestamp
         $ignore = array_slice(array_keys($values), 3) ;
-
+ 
         //  Handle and "hiddenfields"
         $fields = wpgform_hiddenfields_meta_box_content(true) ;
 
@@ -1445,10 +1471,10 @@ jQuery(document).ready(function($) {
                     foreach ($meta_field as $key => $value)
                     {
                         $mf = preg_replace($patterns, $replacements, $meta_field[$key]) ;
-
+    
                         if (empty($meta_value[$key]) || in_array($meta_type[$key], $ignore))
                             $meta_value[$key] = $values[$meta_type[$key]] ;
-
+    
                         if (!empty($mf))
                         {
                             $js .= sprintf('    $("#%s").val("%s");%s', $mf, $meta_value[$key], PHP_EOL) ;
@@ -1573,7 +1599,7 @@ jQuery(document).ready(function($) {
             $js .= PHP_EOL . '    $.get( "' . $confirm . '", function( data ) {
         $( ".result" ).html( data );
     });' ;
-
+            
         }
 
         //  Load the confirmation URL via Redirect?
@@ -1612,7 +1638,7 @@ jQuery(document).ready(function($) {
         if ($wpgform_options['browser_check'] == 1)
         {
             require_once(ABSPATH . '/wp-admin/includes/dashboard.php') ;
-
+ 
             //  Let's check the browser version just in case ...
 
             self::$browser_check = wp_check_browser_version();
@@ -1635,7 +1661,7 @@ jQuery(document).ready(function($) {
 
         //  Assemble final HTML to return.  To handle pages with more than one
         //  form, Javascript, CSS, and debug control should only be rendered once!
-
+ 
         $onetime_html = '' ;
 
         if (WPGFORM_DEBUG)
@@ -1687,11 +1713,11 @@ jQuery(document).ready(function($) {
                ,'form' => array_key_exists('id', $o) ? $o['id'] : null
                ,'post_id' => get_the_ID()
             ) ;
-
+               
             //  Try and log against the Google Form post ID but
             //  fall back to Post or Page ID if the old short code
             //  is being used.
-
+ 
             if (!is_null($log['form']))
                 add_post_meta($log['form'], WPGFORM_LOG_ENTRY_META_KEY, $log, false) ;
         }
@@ -1716,6 +1742,12 @@ jQuery(document).ready(function($) {
         if (WPGFORM_DEBUG) wpgform_preprint_r($_POST) ;
         if (!empty($_POST) && array_key_exists('wpgform-action', $_POST))
         {
+            //  Verify WordPress nonce
+            if ( ! isset( $_POST['wpgform_nonce'] ) || ! wp_verify_nonce( $_POST['wpgform_nonce'], 'wpgform_submit' ) ) {
+                wp_die('Sorry, your nonce did not verify.');
+                exit;
+            }
+        
             if (WPGFORM_DEBUG) wpgform_whereami(__FILE__, __LINE__, 'ProcessGoogleForm') ;
 
             self::$posted = true ;
@@ -1729,24 +1761,35 @@ jQuery(document).ready(function($) {
 
             if (WPGFORM_DEBUG) wpgform_whereami(__FILE__, __LINE__, 'ProcessGoogleForm') ;
             if (WPGFORM_DEBUG) wpgform_preprint_r($_POST) ;
-
+            
             //  Need the form ID to handle multiple forms per page
             if (array_key_exists('wpgform-user-email', $_POST))
             {
-                self::$wpgform_user_sendto = $_POST['wpgform-user-email'] ;
+                self::$wpgform_user_sendto = sanitize_email($_POST['wpgform-user-email']) ;
                 unset($_POST['wpgform-user-email']) ;
             }
 
             //  Need the form ID to handle multiple forms per page
-            self::$wpgform_submitted_form_id = $_POST['wpgform-form-id'] ;
+            self::$wpgform_submitted_form_id = absint(sanitize_text_field($_POST['wpgform-form-id'])) ;
             unset($_POST['wpgform-form-id']) ;
 
             //  Need the action which was saved during form construction
-            $action = unserialize(base64_decode($_POST['wpgform-action'])) ;
+            $action = json_decode(base64_decode(sanitize_text_field($_POST['wpgform-action'])), true) ;
+
             unset($_POST['wpgform-action']) ;
-            $options = $_POST['wpgform-options'] ;
+
+            if (WPGFORM_DEBUG) wpgform_whereami(__FILE__, __LINE__, 'ProcessGoogleForm (action)') ;
+            if (WPGFORM_DEBUG) wpgform_preprint_r($action) ;
+
+            //  As a safety precaution make sure the action provided resolves to Google (docs.google.com drive.google.com).
+            if (!preg_match( '/^(http|https):\\/\\/(docs|drive)\.google\.com/i' ,$action))
+            {
+                wp_die(sprintf('<div class="wpgform-google-error gform-google-error">%s</div>',
+                   __('Google Form submit action does not resolve to <b>drive.google.com</b>.  Form submission aborted.', WPGFORM_I18N_DOMAIN))) ;
+            }
+
+            $options = json_decode(base64_decode(sanitize_text_field($_POST['wpgform-options'])), true) ;
             unset($_POST['wpgform-options']) ;
-            $options = unserialize(base64_decode($options)) ;
 
             if (WPGFORM_DEBUG) wpgform_preprint_r($options) ;
             $form = $options['form'] ;
@@ -1818,7 +1861,7 @@ jQuery(document).ready(function($) {
             //  WordPress converts all of the ampersand characters to their
             //  appropriate HTML entity or some variety of it.  Need to undo
             //  that so the URL can be actually be used.
-
+    
             //$body = stripslashes_deep(urldecode($body)) ;
             //$body = stripslashes_deep($body) ;
             //  Clean up any single quotes and newlines which are escaped
@@ -1899,7 +1942,7 @@ jQuery(document).ready(function($) {
 
         return $pageURL ;
     }
-
+            
     /**
      * WordPress Shortcode handler.
      *
@@ -1939,7 +1982,7 @@ jQuery(document).ready(function($) {
      *
      * Send an e-mail to the blog administrator informing
      * them of a form submission.
-     *
+     * 
      * @param string $format - format of email (plain or HTML)
      * @param string $sendto - email address to send content to
      * @param string $results - URL of the spreadsheet which holds submitted data
@@ -2023,7 +2066,7 @@ jQuery(document).ready(function($) {
             $plain .= sprintf('%s:', __('Responses', WPGFORM_I18N_DOMAIN)) .'  %s' . PHP_EOL ;
             $plain .= sprintf('%s:', __('Date', WPGFORM_I18N_DOMAIN)) .'  %s' . PHP_EOL ;
             $plain .= sprintf('%s:', __('Time', WPGFORM_I18N_DOMAIN)) .'  %s' . PHP_EOL . PHP_EOL ;
-
+            
             $plain .= sprintf('%s,', __('Thank you', WPGFORM_I18N_DOMAIN)) . PHP_EOL . PHP_EOL . '%s' . PHP_EOL ;
 
             $message = sprintf($plain, get_the_title(), get_permalink(),
@@ -2041,7 +2084,7 @@ jQuery(document).ready(function($) {
 
         $subject = sprintf('Form Submission from %s', get_option('blogname')) ;
 
-        if (WPGFORM_DEBUG)
+        if (WPGFORM_DEBUG) 
             wpgform_preprint_r($headers, htmlentities($message)) ;
 
         $status = wp_mail($to, $subject, $message, $headers) ;
@@ -2076,7 +2119,7 @@ function wpgform_load_js_css()
 {
     //  wpGForm needs jQuery!
     wp_enqueue_script('jquery') ;
-
+    
     $wpgform_options = wpgform_get_plugin_options() ;
 
     //  Load default gForm CSS?
@@ -2174,7 +2217,7 @@ function wpgform_enqueue_scripts()
 {
     //  wpGForm needs jQuery!
     //wp_enqueue_script('jquery') ;
-
+    
     //  Enqueue the jQuery Validate script
     wp_enqueue_script('jquery-validate') ;
 

@@ -246,7 +246,7 @@ function injectHeader() { ?>
 
   <div id="title-area" class="header-logo-wrap">
     <a href="<?php echo home_url(); ?>" class="header-logo">
-      <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/logo-primary.svg" alt="The Food Group" />
+      <img src="<?php the_field('global_logo', 'option'); ?>" alt="The Food Group" />
     </a>
   </div>
 

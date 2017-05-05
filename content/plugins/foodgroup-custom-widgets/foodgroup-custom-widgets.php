@@ -123,6 +123,7 @@ class SubnavWidget extends WP_Widget {
 
     require('widgets/subnav/subnav-fields.php');
   }
+
 }
 
 function wp_subnav_widget() {
